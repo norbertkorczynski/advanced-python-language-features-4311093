@@ -7,9 +7,12 @@ import pprint
 
 test_str = "2 apples, 9 oranges?, 4 pears, Mike's 1 egg, Jane's 2 kiwis, $50!"
 
-# YOUR CODE HERE
-
 # print the data
 str_data = {
+    "Length": (len(test_str)),
+    "Digits": (len([d for d in test_str if str(d).isnumeric()])),
+    "Punctuation Count": (len([p for p in test_str if p in string.punctuation])),
+    "Unique Letters" : (ul := "".join({c for c in test_str if c.isalpha()})),
+    "Unique Count" : (len(ul))
 }
 pprint.pp(str_data)

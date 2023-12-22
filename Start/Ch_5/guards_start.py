@@ -29,26 +29,38 @@ class Rectangle:
 
 # create a list of some shapes
 shapes = [Circle(5), Square(4), Rectangle(4, 6),
-          Square(7), Circle(9), Rectangle(2, 5)]
+          Square(7), Circle(9), Rectangle(2, 5),
+          Rectangle(9,9)]
 
 # use pattern matching to process each shape
 # include pattern guards for more detailed processing
-for shape in shapes:
-    match shape:
-        # TODO: add a pattern guard for Circle
-
-        case Circle():
-            print(f"Circle with area {shape.getarea()}")
-        case Square():
-            print(f"Square with area {shape.getarea()}")
-        case Rectangle():
-            print(f"Rectangle with area {shape.getarea()}")
-        case _:
-            print(f"Unrecognized shape: {type(shape)}")
-
-# TODO: Pattern guards can get fairly sophisticated
-dataset = ["UPPER", 5, "Mixed Case", True, None]
-# for d in dataset:
-#     match d:
+# for shape in shapes:
+#     match shape:
+#         # add a pattern guard for Circle
+#         case Circle(radius=r) if r >= 6:
+#             print(f"Large Circle with area {shape.getarea()}")
+#         case Circle():
+#             print(f"Circle with area {shape.getarea()}")
+#         case Square():
+#             print(f"Square with area {shape.getarea()}")
+#         case Rectangle(width=w, height=h) if w == h:
+#             print(f"Square Rectangle with area {shape.getarea()}")
+#         case Rectangle():
+#             print(f"Rectangle with area {shape.getarea()}")
 #         case _:
-#             print(f"{d}: Something else")
+#             print(f"Unrecognized shape: {type(shape)}")
+
+# Pattern guards can get fairly sophisticated
+dataset = ["UPPER", 5, "Mixed Case", True, None]
+for d in dataset:
+    match d:
+        case str() as s if s.isupper():
+            print(f"{d}: Upper case string")
+        case str():
+            print(f"{d}: Not an upper case string")
+        case bool():
+            print(f"{d}: Boolean")
+        case int():
+            print(f"{d}: Integer")
+        case _:
+            print(f"{d}: Something else")

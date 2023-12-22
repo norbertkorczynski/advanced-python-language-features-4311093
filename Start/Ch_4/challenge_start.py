@@ -17,9 +17,15 @@
 #   have a 10.00 surcharge on their price, Paperback books get a 2.00 discount
 # 5) Successfully execute the sample code provided below.
 
+from enum import Enum
+
+# Implement the Hard/Paperback Enum
+class CoverType(Enum):
+    HARD = 1
+    PAPERBACK = 2
 
 class Book():
-    def __init__(self, title, author, pages, cover, antique, price):
+    def __init__(self, title, author, pages, cover: CoverType, antique, price):
         self.title = title
         self.author = author
         self.pages = pages
@@ -27,25 +33,46 @@ class Book():
         self.antique = antique
         self.price = price
 
-    # TODO: Implement the str and repr functions
+    # Implement the str and repr functions
+    def __str__(self) -> str:
+        return f"{self.title} by {self.author}: {self.pages}, {self.cover}, {self.price}"
 
-    # TODO: Implement the adjustedprice attribute
+    def __repr__(self) -> str:
+        return f"<Book:{self.title}:{self.author}:{self.pages}:{self.cover}:{self.antique}:{self.price}>"
 
-    # TODO: Implement comparisons <, >, <=, >=
+    # Implement the adjustedprice attribute
+    def __getattr__(self, attr):
+        if attr == "adjustedprice":
+            price = self.price
+            if self.antique:
+                price += 10
+            if self.cover == CoverType.PAPERBACK:
+                price -= 2
+            return price
+        raise AttributeError(f"{attr} is not a valid attribute")
 
+    # Implement comparisons <, >, <=, >=
+    def __lt__(self, other) -> bool:
+        return self.pages < other.pages
 
-# TODO: Implement the Hard/Paperback Enum
-
+    def __gt__(self, other) -> bool:
+        return self.pages > other.pages
+    
+    def __le__(self, other) -> bool:
+        return self.pages <= other.pages
+    
+    def __ge__(self, other) -> bool:
+        return self.pages >= other.pages
 
 books = [
-    Book("War and Peace", "Leo Tolstoy", 1225, "Hard", True, 29.95),
-    Book("Brave New World", "Aldous Huxley", 311, "Paperback", True, 32.50),
-    Book("Crime and Punishment", "Fyodor Dostoevsky", 492, "Hard", False, 19.75),
-    Book("Moby Dick", "Herman Melville", 427, "Paperback", True, 22.95),
-    Book("A Christmas Carol", "Charles Dickens", 66, "Hard", False, 31.95),
-    Book("Animal Farm", "George Orwell", 130, "Paperback", False, 26.95),
-    Book("Farenheit 451", "Ray Bradbury", 256, "Hard", True, 28.95),
-    Book("Jane Eyre", "Charlotte Bronte", 536, "Paperback", False, 34.95)
+    Book("War and Peace", "Leo Tolstoy", 1225, CoverType.HARD, True, 29.95),
+    Book("Brave New World", "Aldous Huxley", 311, CoverType.PAPERBACK, True, 32.50),
+    Book("Crime and Punishment", "Fyodor Dostoevsky", 492, CoverType.HARD, False, 19.75),
+    Book("Moby Dick", "Herman Melville", 427, CoverType.PAPERBACK, True, 22.95),
+    Book("A Christmas Carol", "Charles Dickens", 66, CoverType.HARD, False, 31.95),
+    Book("Animal Farm", "George Orwell", 130, CoverType.PAPERBACK, False, 26.95),
+    Book("Farenheit 451", "Ray Bradbury", 256, CoverType.HARD, True, 28.95),
+    Book("Jane Eyre", "Charlotte Bronte", 536, CoverType.PAPERBACK, False, 34.95)
 ]
 
 # TEST CODE

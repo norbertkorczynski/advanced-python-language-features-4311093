@@ -38,4 +38,29 @@ test_orders = [
     ]
 ]
 
-# TODO: process each order
+# process each order
+for order in test_orders:
+    print("-----------")
+    totalPrice = 0.0
+    for a in order:
+        match a:
+            case "shirt"|"pants"|"jacket"|"dress" as garment,size, starch, same_day:
+                totalPrice += 12.95
+                if starch:
+                    totalPrice += 2.0
+                if same_day:
+                    totalPrice += 10.0
+                print(f"Dry Clean:({size}) {garment}",
+                      "' Starched' if starch else ''",
+                      "' same-day' if same_day else ''")
+            case str() as description, weight:
+                totalPrice += 4.95*weight
+                if weight > 15:
+                    totalPrice -= 4.95*weight*0.1
+                print(f"Wash/Fold: {description}, weight: {weight}")
+            case "comforter"|"cover" as btype, dryclean, size:
+                print(f"Blanket: ({size}) {btype}",
+                      " ' Dry clean' if dryclean else ''")
+                totalPrice += 25.0
+    print(f"Order total: {totalPrice:.2f}")
+    print("-----------")
